@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { ChakraProvider, Flex, Icon, Input, Switch } from '@chakra-ui/react';
+import { border, ChakraProvider, Flex, Icon, Input, Switch } from '@chakra-ui/react';
 import randomWords from 'random-words'
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import { CgChevronUp, CgChevronDown } from 'react-icons/cg'
 import { BsArrowRepeat } from 'react-icons/bs'
+import { FaSun, FaMoon } from 'react-icons/fa'
 
 function App() {
   const [words, setWords] = useState([])
@@ -22,6 +23,8 @@ function App() {
   const [wpm, setWpm] = useState(0)
   const [actualTimer, setActualTimer] = useState(0)
   const [accuracy, setAccuracy] = useState(0)
+
+  let { textColor, bgColor, cardResultShadow, toggleColorMode, colorMode, cardResultBg } = ColorModeSwitcher()
 
   const getData = (second) => {
     setWords([])
@@ -76,10 +79,10 @@ function App() {
       // console.log(input.substring(0, input.length), words[wordIndex].substring(0, input.length))
       // if (input.charAt(input.length - 1) === temp[input.length - 1]) {
       if (input.substring(0, input.length) == words[wordIndex].substring(0, input.length)) {
-        setBorderColor('green.300')
+        setBorderColor(colorMode == 'dark' ? 'green.300' : 'green.500')
       }
       else {
-        setBorderColor('red.600')
+        setBorderColor(colorMode == 'dark' ? 'red.600' : 'red.700')
       }
     }
   }
@@ -103,15 +106,15 @@ function App() {
     setAccuracy(0)
   }
 
-  const ResultTemplate = (second) => {
+  const ResultTemplate = () => {
     return (
-      <Flex w='20%' h='fit-content' bg='#557B83' boxShadow='0px 0px 7px 0px #00FFAB' _hover={{ transform: 'translateY(-5px)', boxShadow: '0px 0px 10px 0px #00FFAB' }} transitionDuration='.2s' opacity={wpm ? 1 : 0} color='black' justify='center' borderRadius='10px' py='10px' direction='column'>
+      <Flex w='20%' h='fit-content' display={wpm ? 'flex' : 'none'} bg={cardResultBg} boxShadow={`0px 0px 7px 0px ${cardResultShadow}`} _hover={{ transform: 'translateY(-5px)', boxShadow: `0px 0px 10px 2px ${cardResultShadow}` }} transitionDuration='.3s' color={textColor} justify='center' borderRadius='10px' py='10px' direction='column'>
         <Flex w='100%' justify='center' mb='10px'>
           <Flex fontWeight='bold' letterSpacing='1px' fontSize='2xl'>{wpm.toFixed(0)} WPM</Flex>
         </Flex>
         <Flex w='100%' direction='column' alignItems='center' justify='center'>
           <Flex w='80%' justify='space-between' my='3px'>
-            <Flex w='35%' justify='center' fontWeight='bold'>{accuracy.toFixed(2)} %</Flex>
+            <Flex w='fit-content' justify='center' fontWeight='bold'>{accuracy.toFixed(2)} %</Flex>
             <Flex>Accuracy</Flex>
           </Flex>
           <Flex w='80%' justify='space-between' my='3px'>
@@ -132,7 +135,7 @@ function App() {
   }
 
   useEffect(() => {
-    start && timer > 0 && setTimeout(() => setTimer(timer - 1), 100)
+    start && timer > 0 && setTimeout(() => setTimer(timer - 1), 10)
     if (timer === 0) {
       setStart(false)
       setdisableKeyboard(true)
@@ -155,37 +158,35 @@ function App() {
 
 
   return (
-    <ChakraProvider >
-      <Flex bg='#1A202C' w='100vw' minH='100vh' alignItems='center' justify={'center'} direction={'column'} fontFamily='Montserrat'>
-        {/* <Flex position='absolute' right='8' top='6'>
-          <ColorModeSwitcher />
-        </Flex> */}
-        <Flex w='100%' h='15vh' justify='center' alignItems='center' letterSpacing='4px' fontSize={52} fontStyle='italic' fontWeight='bold'>
-          Typefast
-        </Flex>
-        <Flex w='46%' h='fit-content' my='1rem' wrap='wrap' justify='flex-start'>
-          {
-            words.map((i, id) => id <= limitUp && id >= limitDown && <WordTemplate word={i} />)
-          }
-        </Flex>
-        <Flex w='100%' h='20vh' justify='center' alignItems='center'>
-          <Flex h='25%' w='45%' pos='relative' alignItems='center'>
-            <Input type='text' variant='flushed' color='whiteAlpha.900' borderBottomColor={borderColor} borderBottomWidth='2px' zIndex={2} _focus={{ borderBottomColor: 'none' }} w='90%' value={input} onKeyUp={keyboardChange} onChange={e => setInput(e.target.value)} disabled={disableKeyboard} />
-            <Input type='text' variant='flushed' color='whiteAlpha.400' pos='absolute' value={input?.substring(0, input?.length) == words[wordIndex]?.substring(0, input.length) ? words[wordIndex] : ''} zIndex={1} w='90%' disabled />
-            <Flex display={timer == 0 ? 'none' : 'flex'} direction='column' pos='absolute' right={0} h='fit-content' alignItems='center' justify='center' w='fit-content' >
-              <Icon as={CgChevronUp} my='2px' cursor='pointer' _hover={{ transform: 'scale(1.3)' }} transitionDuration='.2s' onClick={() => setTimer(timer + 60)} display={!start ? 'block' : 'none'} />
-              <Flex w='100%' justify='center' alignItems='center' userSelect='none' flexDir='column'>{timer} sec</Flex>
-              <Icon as={CgChevronDown} my='2px' cursor='pointer' _hover={{ transform: 'scale(1.3)' }} transitionDuration='.2s' onClick={() => { timer > 60 && setTimer(timer - 60); setdisableKeyboard(false) }} display={!start ? 'block' : 'none'} />
-            </Flex>
-            <Flex display={timer == 0 ? 'flex' : 'none'} w='10%' h='100%' alignItems='center' color='white' justify='center'>
-              <Icon as={BsArrowRepeat} boxSize={6} cursor='pointer' _hover={{ transform: 'scale(1.15)' }} transitionDuration='.2s' onClick={() => repeatTest()} />
-              {/* <RepeatClockIcon boxSize={5}  /> */}
-            </Flex>
+    <Flex bg={bgColor} color={textColor} w='100vw' minH='100vh' alignItems='center' justify={'center'} direction={'column'} fontFamily='Montserrat'>
+      <Flex position='absolute' right='8' top='6'>
+        <Icon as={colorMode == 'dark' ? FaMoon : FaSun} boxSize={7} onClick={toggleColorMode} cursor='pointer' />
+      </Flex>
+      <Flex w='100%' h='15vh' justify='center' alignItems='center' letterSpacing='4px' fontSize={52} fontStyle='italic' fontWeight='bold'>
+        Typefast
+      </Flex>
+      <Flex w='46%' h='fit-content' my='1rem' wrap='wrap' justify='flex-start'>
+        {
+          words.map((i, id) => id <= limitUp && id >= limitDown && <WordTemplate word={i} />)
+        }
+      </Flex>
+      <Flex w='100%' h='20vh' justify='center' alignItems='center'>
+        <Flex h='25%' w='45%' pos='relative' alignItems='center'>
+          <Input type='text' variant='flushed' color={textColor} borderBottomColor={borderColor ? borderColor : 'blue.300'} borderBottomWidth='2px' zIndex={2} _focus={{ borderBottomColor: 'none' }} w='90%' value={input} onKeyUp={keyboardChange} onChange={e => setInput(e.target.value)} disabled={disableKeyboard} />
+          <Input type='text' variant='flushed' color={colorMode == 'dark' ? 'whiteAlpha.400' : 'blackAlpha.600'} pos='absolute' value={input?.substring(0, input?.length) == words[wordIndex]?.substring(0, input.length) ? words[wordIndex] : ''} zIndex={1} w='90%' disabled />
+          <Flex display={timer == 0 ? 'none' : 'flex'} direction='column' pos='absolute' right={0} h='fit-content' alignItems='center' justify='center' w='fit-content' >
+            <Icon as={CgChevronUp} color={textColor} my='2px' cursor='pointer' _hover={{ transform: 'scale(1.3)' }} transitionDuration='.2s' onClick={() => setTimer(timer + 60)} display={!start ? 'block' : 'none'} />
+            <Flex w='100%' justify='center' alignItems='center' userSelect='none' flexDir='column'>{timer} sec</Flex>
+            <Icon as={CgChevronDown} color={textColor} my='2px' cursor='pointer' _hover={{ transform: 'scale(1.3)' }} transitionDuration='.2s' onClick={() => { timer > 60 && setTimer(timer - 60); setdisableKeyboard(false) }} display={!start ? 'block' : 'none'} />
+          </Flex>
+          <Flex display={timer == 0 ? 'flex' : 'none'} w='10%' h='100%' alignItems='center' color='white' justify='center'>
+            <Icon as={BsArrowRepeat} color={textColor} boxSize={6} cursor='pointer' _hover={{ transform: 'scale(1.15)' }} transitionDuration='.2s' onClick={() => repeatTest()} />
+            {/* <RepeatClockIcon boxSize={5}  /> */}
           </Flex>
         </Flex>
-        <ResultTemplate />
       </Flex>
-    </ChakraProvider >
+      <ResultTemplate />
+    </Flex>
   );
 }
 
