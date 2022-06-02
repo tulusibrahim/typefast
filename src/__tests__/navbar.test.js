@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen, within } from '@testing-library/react'
-import Navbar from './navbar'
+import Navbar from '../components/navbar'
 
 test('should render navbar', () => {
     render(<Navbar />)

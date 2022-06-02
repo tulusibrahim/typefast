@@ -99,7 +99,7 @@ const useListWord = () => {
     }
 
     useEffect(() => {
-        start && timer > 0 && setTimeout(() => setTimer(timer - 1), 100)
+        start && timer > 0 && setTimeout(() => setTimer(timer - 1), 1000)
         if (timer === 0) {
             setStart(false)
             setdisableKeyboard(true)
@@ -136,6 +136,14 @@ const useListWord = () => {
         repeatTest,
         setTimer,
         setInput,
+        CalculateWPMandAccuracy,
+        setTotalCharacter,
+        moveOneSequence,
+        setActualTimer,
+        setWrongWords,
+        getData,
+        setWords,
+        setWordIndex,
     }
 }
 
