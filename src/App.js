@@ -26,6 +26,7 @@ function App() {
     shallowInput,
     totalCharacter,
     disableKeyboard,
+    allInputtedWords,
     setdisableKeyboard,
     setShallowInput,
     keyboardChange,
@@ -44,7 +45,7 @@ function App() {
 
       <Title />
 
-      <ListWord words={words} limitUp={limitUp} limitDown={limitDown} wordIndex={wordIndex} />
+      <ListWord words={words} limitUp={limitUp} limitDown={limitDown} wordIndex={wordIndex} allInputtedWords={allInputtedWords} />
 
       <InputComponent
         borderColor={borderColor}

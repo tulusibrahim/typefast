@@ -1,8 +1,9 @@
 import { Flex } from "@chakra-ui/react"
 import { ColorModeSwitcher } from "../ColorModeSwitcher"
 
-const WordTemplate = ({ word, id, wordIndex }) => {
-    let { colorMode } = ColorModeSwitcher()
+const WordTemplate = ({ word, id, wordIndex, allInputtedWords, words }) => {
+    let { colorMode, textColor } = ColorModeSwitcher()
+    // console.log(allInputtedWords)
 
     return (
         <Flex
@@ -13,6 +14,7 @@ const WordTemplate = ({ word, id, wordIndex }) => {
                 colorMode === 'dark' ? 'gray.900'
                     : 'whiteAlpha.700'
                 : ''}
+            color={wordIndex > id ? allInputtedWords[id] == words[id] ? textColor : 'red.500' : null}
             borderRadius='10px'
             mr='10px'
             mb='10px'

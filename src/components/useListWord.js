@@ -15,6 +15,7 @@ const useListWord = () => {
     const [borderColor, setBorderColor] = useState('blue.500')
     const [rightWords, setRightWords] = useState(0)
     const [wrongWords, setWrongWords] = useState(0)
+    const [allInputtedWords, setAllInputtedWords] = useState([])
     const [totalCharacter, setTotalCharacter] = useState(0)
     const [wpm, setWpm] = useState(0)
     const [actualTimer, setActualTimer] = useState(0)
@@ -34,10 +35,10 @@ const useListWord = () => {
 
     const keyboardChange = (e) => {
         if (start === false) {
-            setTotalCharacter(0)
-            setWrongWords(0)
-            setRightWords(0)
-            setWordIndex(0)
+            // setTotalCharacter(0)
+            // setWrongWords(0)
+            // setRightWords(0)
+            // setWordIndex(0)
 
             setActualTimer(timer / 60)
             setStart(true)
@@ -48,11 +49,22 @@ const useListWord = () => {
             // console.log(input.match(/[^\s]/g).join(''), words[wordIndex])
 
             setTotalCharacter(totalCharacter + input.length)
+            console.log(input.match(/[^\s]/g))
+            // input == '' ? setAllInputtedWords(e => [...e, input.match(/[^\s]/g).join('')]) : setAllInputtedWords('')
 
-            if (input.match(/[^\s]/g).join('') === words[wordIndex]) {
-                setRightWords(rightWords + 1)
+            if (input.match(/[^\s]/g) !== null) {
+                setAllInputtedWords(e => [...e, input.match(/[^\s]/g).join('')])
+                if (input.match(/[^\s]/g).join('') === words[wordIndex]) {
+                    console.log('nambah bener')
+                    setRightWords(rightWords + 1)
+                }
+                else {
+                    console.log('nambah salah')
+                    setWrongWords(wrongWords + 1)
+                }
             }
             else {
+                setAllInputtedWords(e => [...e, ''])
                 setWrongWords(wrongWords + 1)
             }
             setInput('')
@@ -96,10 +108,15 @@ const useListWord = () => {
         setAccuracy(0)
         setLimitDown(0)
         setLimitUp(10)
+        setAllInputtedWords([])
+        setTotalCharacter(0)
+        setWrongWords(0)
+        setRightWords(0)
+        setWordIndex(0)
     }
 
     useEffect(() => {
-        start && timer > 0 && setTimeout(() => setTimer(timer - 1), 1000)
+        start && timer > 0 && setTimeout(() => setTimer(timer - 1), 100)
         if (timer === 0) {
             setStart(false)
             setdisableKeyboard(true)
@@ -138,12 +155,13 @@ const useListWord = () => {
         setInput,
         CalculateWPMandAccuracy,
         setTotalCharacter,
+        allInputtedWords,
         moveOneSequence,
         setActualTimer,
         setWrongWords,
-        getData,
-        setWords,
         setWordIndex,
+        setWords,
+        getData,
     }
 }
 
