@@ -6,6 +6,7 @@ import ListWord from './components/listWord';
 import ResultTemplate from './components/resultTemplate';
 import useListWord from './components/useListWord';
 import InputComponent from './components/input';
+import Feedback from './components/feedback';
 
 function App() {
 
@@ -70,6 +71,8 @@ function App() {
         wrongWords={wrongWords}
         totalCharacter={totalCharacter}
       />
+
+      <Feedback />
     </Flex>
   );
 }

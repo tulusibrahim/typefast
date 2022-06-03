@@ -5,7 +5,7 @@ const ResultTemplate = ({ wpm, accuracy, rightWords, wrongWords, totalCharacter 
     let { textColor, cardResultShadow, cardResultBg } = ColorModeSwitcher()
 
     return (
-        <Flex w={['70%', '70%', '20%']} h='fit-content' display={wpm ? 'flex' : 'none'} bg={cardResultBg} boxShadow={`0px 0px 7px 0px ${cardResultShadow}`} _hover={{ transform: 'translateY(-5px)', boxShadow: `0px 0px 10px 2px ${cardResultShadow}` }} transitionDuration='.3s' color={textColor} justify='center' borderRadius='10px' py='10px' direction='column' role='group'>
+        <Flex w={['70%', '70%', '20%']} h='fit-content' display={wpm ? 'flex' : 'none'} bg={cardResultBg} boxShadow={`0px 0px 7px 0px ${cardResultShadow}`} transitionDuration='.3s' color={textColor} justify='center' borderRadius='10px' py='10px' direction='column' role='group'>
             <Flex w='100%' justify='center' mb='10px'>
                 <Flex fontWeight='bold' letterSpacing='1px' fontSize='2xl'>{wpm.toFixed(0)} WPM</Flex>
             </Flex>
