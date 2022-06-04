@@ -6,9 +6,9 @@ export const ColorModeSwitcher = props => {
   const { toggleColorMode, colorMode } = useColorMode();
   const textColor = useColorModeValue('black', '#E9ECEF');
   const bgColor = useColorModeValue('#B7E4C7', '#000000');
-  const cardResultBg = useColorModeValue('#74C69D', '#2D6A4F')
+  const cardResultBg = useColorModeValue('#6fe398', '#0f0f0f')
   //card shadow value #00FFAB
-  const cardResultShadow = useColorModeValue('#40916C', 'white')
+  const cardResultShadow = useColorModeValue('#50a36d', '#757272')
 
   return { textColor, bgColor, cardResultBg, cardResultShadow, toggleColorMode, colorMode }
 
